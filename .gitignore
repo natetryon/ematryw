@@ -1,5 +1,2 @@
-*.sln
-*.csproj
 bin/
 obj/
-Properties/
