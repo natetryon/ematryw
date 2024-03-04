@@ -1,0 +1,66 @@
+
+svg {
+    display: block;
+    margin: 5%;
+    height: 80vh;
+    min-width: 301px;
+    min-height: 225px;
+}
+
+
+#maze-info {
+
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: 80vh;
+    margin: 5%;
+}
+
+.maze-grid-display {
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: larger;
+    font-weight: bolder;
+    background-color: white;
+    width: 30%;
+    text-align: center;
+    margin: 10px 16px;
+    border: 2px solid black;
+    min-width: 480px;
+}
+
+.maze-menu-button {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 1100px) {
+
+    #gameArena {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    #maze-info {
+        width: 100%;
+        height: auto;
+    }
+
+    #maze-text, #button_solve {
+        display: none;
+    }
+
+    svg {
+        width: 100%;
+        margin: 5vh;
+        height: 100%;
+        min-width: 301px;
+        min-height: 225px;
+    }
+
+    #lvl5, #lvl6 {
+        display: none;
+    }
+}

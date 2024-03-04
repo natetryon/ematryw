@@ -1,0 +1,118 @@
+@page "/maze"
+
+@inject IJSRuntime JS;
+@inject IConfiguration Configuration;
+
+<h3 id="maze-text">@MazeWelcome</h3>
+
+<div id="gameArena" style="display: flex; flex-direction: row;">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:ev="http://www.w3.org/2001/sml-events"
+    id="mainMazeSVG"
+    viewBox = "0 0 @SVG_WIDTH @SVG_HEIGHT"
+    @onclick="CreateMaze">
+
+    <rect x="0" y="0" width="1204" height="900" fill="#bdc3c7"/>
+
+</svg>
+
+<div id="maze-info">
+
+    <select class="w3-select w3-border" name="zsp-select"
+        style="margin-bottom: 10px"
+        @bind="complexitySelect">
+        <option value="5" disabled selected>Choose difficulty</option>
+        <option value=5>Level 1</option>
+        <option value=9>Level 2</option>
+        <option value=17>Level 3</option>
+        <option value=27>Level 4</option>
+        <option id ="lvl5" value=35>Level 5</option>
+        <option id ="lvl6" value=61>Level 6</option>
+    </select>
+
+    <button class="w3-button w3-khaki w3-round-large maze-menu-button" id="button_generate" @onclick="CreateMaze">Generate New</button>
+    <button class="w3-button w3-green w3-round-large maze-menu-button" id="button_solve" disabled="true">Solve - Player</button>
+    <button class="w3-button w3-blue w3-round-large maze-menu-button" id="button_solution" disabled="true">Show Solution</button>
+    <button class="w3-button w3-red w3-round-large maze-menu-button" id="button_race" disabled="true" @onclick="Race">Race</button>
+    
+</div>
+
+</div>
+
+@code {
+    private string MazeWelcome = "Welcome to the maze game! " 
+     + "Click on the arena or \"Generate New\" to create a new maze.";
+    private string Loading = "Creating maze...";
+    private bool firstMazeCreated = false;
+    private bool raceInProgress = false;
+    private string gridString = "";
+    private string spaceColorString = "";
+    private string wallColorString = "";
+    private int complexity;
+    private const int SVG_WIDTH = 1204;
+    private const int SVG_HEIGHT = 900;
+    private const int MAX_DB_MAZES = 10;
+    private int complexitySelect = 5;
+
+    [Parameter]
+    public int SavedMazeId { get; set; }
+
+
+    private async void CreateMaze() {
+
+        SavedMazeId = 0;
+
+        if (raceInProgress)
+        {
+            await JS.InvokeVoidAsync("terminateRace");
+            raceInProgress = false;
+        }
+
+        if (complexitySelect > 20)
+        {
+            await JS.InvokeVoidAsync("setText", Loading);
+        }
+
+        var newMaze = new MazeGrid(complexitySelect);
+
+        gridString = newMaze.ToString();
+        spaceColorString = newMaze.spaceColor.ToString();
+        wallColorString = newMaze.wallColor.ToString();
+        complexity = newMaze.complexity;
+
+        await JS.InvokeVoidAsync("setMaze",
+            gridString, wallColorString, spaceColorString,
+            complexity, "mainMazeSVG");
+
+        
+
+        if (!firstMazeCreated)
+        {
+            firstMazeCreated = true;
+            await JS.InvokeVoidAsync("activateButtons");
+        }
+
+        await JS.InvokeVoidAsync("setText", MazeWelcome);
+
+    }
+
+    private async void Race() {
+
+        raceInProgress = await JS.InvokeAsync<bool>("raceInProgress");
+
+        if (raceInProgress)
+        {
+            await JS.InvokeVoidAsync("setText", "Race in progress.");
+            return;
+        }
+
+        else
+        {
+            raceInProgress = true;
+            await JS.InvokeVoidAsync("beginRace");
+        }
+    }
+
+    }
