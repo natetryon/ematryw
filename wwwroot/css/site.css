@@ -9,7 +9,6 @@ a, .btn-link {
 }
 
 article {
-    width: 50%;
     min-width: 480px;
     font-size: large;
 }

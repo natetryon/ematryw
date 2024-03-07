@@ -56,7 +56,6 @@ function activateButtons() {
     document.getElementById("button_solve").removeAttribute("disabled");
     document.getElementById("button_solution").removeAttribute("disabled");
     document.getElementById("button_race").removeAttribute("disabled");
-    document.getElementById("button_save").removeAttribute("disabled");
 
     document.getElementById("button_solve").addEventListener("click", playerSolve);
     document.getElementById("button_solution").addEventListener("click", computerSolve);
@@ -102,7 +101,6 @@ function deactivateButtons() {
     document.getElementById("button_solve").setAttribute("disabled", "true");
     document.getElementById("button_solution").setAttribute("disabled", "true");
     document.getElementById("button_race").setAttribute("disabled", "true");
-    document.getElementById("button_save").setAttribute("disabled", "true");
 
     document.getElementById("button_solve").removeEventListener("click", playerSolve);
     document.getElementById("button_solution").removeEventListener("click", computerSolve);
