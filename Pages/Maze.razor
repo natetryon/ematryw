@@ -1,7 +1,6 @@
 @page "/maze"
 
 @inject IJSRuntime JS;
-@inject IConfiguration Configuration;
 
 <h3 id="maze-text">@MazeWelcome</h3>
 
@@ -56,13 +55,7 @@
     private const int MAX_DB_MAZES = 10;
     private int complexitySelect = 5;
 
-    [Parameter]
-    public int SavedMazeId { get; set; }
-
-
     private async void CreateMaze() {
-
-        SavedMazeId = 0;
 
         if (raceInProgress)
         {
@@ -85,8 +78,6 @@
         await JS.InvokeVoidAsync("setMaze",
             gridString, wallColorString, spaceColorString,
             complexity, "mainMazeSVG");
-
-        
 
         if (!firstMazeCreated)
         {
@@ -115,4 +106,4 @@
         }
     }
 
-    }
+}

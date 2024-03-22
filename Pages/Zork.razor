@@ -1,0 +1,29 @@
+@page "/zork"
+
+@inject IJSRuntime JS;
+
+<link href="css/zork.css" rel="stylesheet" />
+
+
+
+<div id="zork-arena">
+    <h2>Zork I: The Great Underground Empire</h2>
+    <h4>A complete re-creation</h4>
+    <div id="zork-output"></div>
+    <input id="zork-input" @onchange="ChangeInput"/>
+</div>
+
+@code {
+
+    protected override async Task OnInitializedAsync() {
+
+        await JS.InvokeVoidAsync("initZorkGame");
+    }
+
+    private void ChangeInput(ChangeEventArgs e) {
+
+        Console.WriteLine(e.Value);
+        
+    }
+
+}
